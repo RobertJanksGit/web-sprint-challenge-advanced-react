@@ -5,7 +5,7 @@ import axios from "axios";
 const initialMessage = "";
 const initialEmail = "";
 const initialSteps = 0;
-const initialIndex = 4; // the index the "B" is at
+const initialXY = { x: 2, y: 2 }; // the index the "B" is at
 const initialGrid = [0, 1, 2, 3, 4, 5, 6, 7, 8];
 
 export default function AppFunctional(props) {
@@ -13,6 +13,7 @@ export default function AppFunctional(props) {
   const [steps, setSteps] = useState(initialSteps);
   const [formData, setFormData] = useState(initialEmail);
   const [message, setMessage] = useState(initialMessage);
+  const [xY, setXY] = useState(initialXY);
   // THE FOLLOWING HELPERS ARE JUST RECOMMENDATIONS.
   // You can delete them and build your own logic from scratch.
 
@@ -26,7 +27,24 @@ export default function AppFunctional(props) {
     else return `(${index - 2}, 2)`;
   }
 
-  function trackXY() {}
+  function trackXY(index) {
+    console.log(index);
+    if (index < 3) {
+      setXY({ x: index + 1, y: 1 });
+      // return ;
+      // return 1;
+    }
+    if (index > 5) {
+      setXY({ x: index - 5, y: 3 });
+      // return index - 5;
+      // return 3;
+    }
+    if (index > 2 && index < 6) {
+      setXY({ x: index - 2, y: 2 });
+      // return index - 2;
+      // return 2;
+    }
+  }
 
   function reset(evt) {
     evt.preventDefault();
@@ -34,28 +52,29 @@ export default function AppFunctional(props) {
     setSteps(initialSteps);
     setFormData(initialEmail);
     setMessage(initialMessage);
+    setXY(initialXY);
     // Use this helper to reset all states to their initial values.
   }
 
   function getNextIndex(direction, idx) {
     let currentIdx = idx;
     setMessage(initialMessage);
-    if (direction === "up" && idx > 2) currentIdx -= 3;
-    else if (direction === "up" && idx < 3) setMessage("You can't go up");
 
-    if (direction === "down" && idx < 6) currentIdx += 3;
-    else if (direction === "down" && idx > 5) setMessage("You can't go down");
-    if (direction === "left" && idx !== 0 && idx !== 3 && idx !== 6)
-      currentIdx -= 1;
-    else if (direction === "left" && idx < 3) setMessage("You can't go left");
-    if (direction === "right" && idx !== 2 && idx !== 5 && idx !== 8)
-      currentIdx += 1;
-    else if (direction === "right" && idx < 3) setMessage("You can't go right");
+    if (direction === "up") {
+      if (idx > 2) currentIdx -= 3;
+      else setMessage("You can't go up");
+    } else if (direction === "down") {
+      if (idx < 6) currentIdx += 3;
+      else setMessage("You can't go down");
+    } else if (direction === "left") {
+      if (idx % 3 !== 0) currentIdx -= 1;
+      else setMessage("You can't go left");
+    } else if (direction === "right") {
+      if (idx % 3 !== 2) currentIdx += 1;
+      else setMessage("You can't go right");
+    }
 
     return currentIdx;
-    // This helper takes a direction ("left", "up", etc) and calculates what the next index
-    // of the "B" would be. If the move is impossible because we are at the edge of the grid,
-    // this helper should return the current index unchanged.
   }
 
   useEffect(() => {}, [grid]);
@@ -66,6 +85,7 @@ export default function AppFunctional(props) {
     const direction = evt.target.id;
     const idx = getIndex(grid);
     const nextIdx = getNextIndex(direction, idx);
+    trackXY(nextIdx);
 
     if (idx !== nextIdx) {
       const newGrid = [...grid];
@@ -79,26 +99,35 @@ export default function AppFunctional(props) {
 
   function onChange(evt) {
     setFormData(evt.target.value);
-    console.log(evt);
     // You will need this to update the value of the input.
   }
 
   const onSubmit = async (evt) => {
     evt.preventDefault();
-    if (!formData) setMessage("Ouch: email is required");
-    else if (!formData.includes(".com"))
-      setMessage("Ouch: email must be a valid email");
+    // if (!formData) {
+    //   setMessage("Ouch: email is required");
+    //   return;
+    // } else if (!formData.includes(".com" && ".baz")) {
+    //   setMessage("Ouch: email must be a valid email");
+    //   return;
+    // }
     setFormData(initialEmail);
     try {
       const { data } = await axios.post("http://localhost:9000/api/result", {
-        x: 1,
-        y: 2,
-        steps: 4,
-        email: "name@email.com",
+        x: xY.x,
+        y: xY.y,
+        steps: steps,
+        email: formData,
+      });
+      console.log({
+        x: xY.x,
+        y: xY.y,
+        steps: steps,
+        email: formData,
       });
       setMessage(data.message);
     } catch (err) {
-      console.error(err);
+      setMessage(err.response.data.message);
     }
     // Use a POST request to send a payload to the server.
   };
