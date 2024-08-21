@@ -52,7 +52,9 @@ test("shows error message for invalid email", async () => {
   userEvent.type(input, "invalid-email");
   userEvent.click(submitButton);
 
-  expect(
-    await screen.findByText(/Ouch: email must be a valid email/i)
-  ).toBeInTheDocument();
+  await waitFor(() => {
+    expect(
+      screen.findByText("Ouch: email must be a valid email")
+    ).toBeInTheDocument();
+  });
 });
