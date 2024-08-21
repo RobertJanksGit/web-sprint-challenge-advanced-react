@@ -44,7 +44,7 @@ test("shows error message for invalid email", async () => {
   render(<AppFunctional />);
 
   const input = screen.getByPlaceholderText(/type email/i);
-  const submitButton = screen.getByText(/submit/i);
+  const submitButton = screen.findByText(/submit/i);
 
   userEvent.type(input, "invalid-email");
   userEvent.click(submitButton);

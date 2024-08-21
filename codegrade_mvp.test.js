@@ -79,27 +79,23 @@ test("AppFunctional is a functional component", () => {
     describe(`[A ${label}] Active Square`, () => {
       test(`[A1 ${label}] Actions: none (Initial State of <App />)
           Active Square should be index 4`, () => {
-        updateStatefulSelectors(document);
         testSquares(squares, 4);
       });
       test(`[A2 ${label}] Actions: up
           Active Square should be index 1`, () => {
         fireEvent.click(up);
-        updateStatefulSelectors(document);
         testSquares(squares, 1);
       });
       test(`[A3 ${label}] Actions: up, up
           Active Square should be index 1`, () => {
         fireEvent.click(up);
         fireEvent.click(up);
-        updateStatefulSelectors(document);
         testSquares(squares, 1);
       });
       test(`[A4 ${label}] Actions: up, left
           Active Square should be index 0`, () => {
         fireEvent.click(up);
         fireEvent.click(left);
-        updateStatefulSelectors(document);
         testSquares(squares, 0);
       });
       test(`[A5 ${label}] Actions: up, left, left
@@ -107,14 +103,12 @@ test("AppFunctional is a functional component", () => {
         fireEvent.click(up);
         fireEvent.click(left);
         fireEvent.click(left);
-        updateStatefulSelectors(document);
         testSquares(squares, 0);
       });
       test(`[A6 ${label}] Actions: up, right
           Active Square should be index 2`, () => {
         fireEvent.click(up);
         fireEvent.click(right);
-        updateStatefulSelectors(document);
         testSquares(squares, 2);
       });
       test(`[A7 ${label}] Actions: up, right, right
@@ -122,27 +116,23 @@ test("AppFunctional is a functional component", () => {
         fireEvent.click(up);
         fireEvent.click(right);
         fireEvent.click(right);
-        updateStatefulSelectors(document);
         testSquares(squares, 2);
       });
       test(`[A8 ${label}] Actions: right
           Active Square should be index 5`, () => {
         fireEvent.click(right);
-        updateStatefulSelectors(document);
         testSquares(squares, 5);
       });
       test(`[A9 ${label}] Actions: right, right
           Active Square should be index 5`, () => {
         fireEvent.click(right);
         fireEvent.click(right);
-        updateStatefulSelectors(document);
         testSquares(squares, 5);
       });
       test(`[A10 ${label}] Actions: right, down
           Active Square should be index 8`, () => {
         fireEvent.click(right);
         fireEvent.click(down);
-        updateStatefulSelectors(document);
         testSquares(squares, 8);
       });
       test(`[A11 ${label}] Actions: right, down, down
@@ -150,14 +140,12 @@ test("AppFunctional is a functional component", () => {
         fireEvent.click(right);
         fireEvent.click(down);
         fireEvent.click(down);
-        updateStatefulSelectors(document);
         testSquares(squares, 8);
       });
       test(`[A12 ${label}] Actions: down, left
           Active Square should be index 6`, () => {
         fireEvent.click(down);
         fireEvent.click(left);
-        updateStatefulSelectors(document);
         testSquares(squares, 6);
       });
       test(`[A13 ${label}] Actions: down, down, left, left
@@ -166,7 +154,6 @@ test("AppFunctional is a functional component", () => {
         fireEvent.click(down);
         fireEvent.click(left);
         fireEvent.click(left);
-        updateStatefulSelectors(document);
         testSquares(squares, 6);
       });
     });
@@ -363,10 +350,8 @@ test("AppFunctional is a functional component", () => {
         fireEvent.click(up);
         fireEvent.click(up);
         fireEvent.click(left);
-        updateStatefulSelectors(document);
         testSquares(squares, 0);
         fireEvent.click(reset);
-        updateStatefulSelectors(document);
         testSquares(squares, 4);
       });
       test(`[E2 ${label}] Coordinates are reset`, () => {

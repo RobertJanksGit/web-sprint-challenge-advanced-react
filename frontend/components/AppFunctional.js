@@ -135,8 +135,11 @@ export default function AppFunctional(props) {
       </div>
       <div id="grid">
         {grid.map((item) => (
-          <div key={item} className={`square${item === 4 ? " active" : ""}`}>
-            {item === 4 ? "B" : null}
+          <div
+            key={item}
+            className={`square${item === activeIndex ? " active" : ""}`}
+          >
+            {item === activeIndex ? "B" : null}
           </div>
         ))}
       </div>
