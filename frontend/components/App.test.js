@@ -1,6 +1,7 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import AppFunctional from "./AppFunctional";
+import userEvent from "@testing-library/user-event";
 
 test("renders headings correctly", () => {
   render(<AppFunctional />);
@@ -18,7 +19,6 @@ test("renders directional buttons", () => {
   expect(screen.getByText(/RIGHT/i)).toBeInTheDocument();
   expect(screen.getByText(/DOWN/i)).toBeInTheDocument();
 });
-import userEvent from "@testing-library/user-event";
 
 test("input value updates on typing", () => {
   render(<AppFunctional />);

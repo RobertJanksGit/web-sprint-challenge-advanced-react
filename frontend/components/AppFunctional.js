@@ -5,21 +5,18 @@ import axios from "axios";
 const initialMessage = "";
 const initialEmail = "";
 const initialSteps = 0;
-const initialXY = { x: 2, y: 2 }; // the index the "B" is at
+const initialXY = { x: 2, y: 2 };
 const initialGrid = [0, 1, 2, 3, 4, 5, 6, 7, 8];
 
 export default function AppFunctional(props) {
   const [grid, setGrid] = useState(initialGrid);
   const [steps, setSteps] = useState(initialSteps);
+  const [activeIndex, setActiveIndex] = useState(4);
   const [formData, setFormData] = useState(initialEmail);
   const [message, setMessage] = useState(initialMessage);
   const [xY, setXY] = useState(initialXY);
   // THE FOLLOWING HELPERS ARE JUST RECOMMENDATIONS.
   // You can delete them and build your own logic from scratch.
-
-  function getIndex(array) {
-    return array.indexOf(4);
-  }
 
   function getXY(index) {
     if (index < 3) return `(${index + 1}, 1)`;
@@ -31,23 +28,18 @@ export default function AppFunctional(props) {
     console.log(index);
     if (index < 3) {
       setXY({ x: index + 1, y: 1 });
-      // return ;
-      // return 1;
     }
     if (index > 5) {
       setXY({ x: index - 5, y: 3 });
-      // return index - 5;
-      // return 3;
     }
     if (index > 2 && index < 6) {
       setXY({ x: index - 2, y: 2 });
-      // return index - 2;
-      // return 2;
     }
   }
 
   function reset(evt) {
     evt.preventDefault();
+    setActiveIndex(4);
     setGrid(initialGrid);
     setSteps(initialSteps);
     setFormData(initialEmail);
@@ -77,14 +69,15 @@ export default function AppFunctional(props) {
     return currentIdx;
   }
 
-  useEffect(() => {}, [grid]);
+  // useEffect(() => {}, [grid]);
 
   function move(evt) {
     evt.preventDefault();
 
     const direction = evt.target.id;
-    const idx = getIndex(grid);
+    const idx = activeIndex;
     const nextIdx = getNextIndex(direction, idx);
+    setActiveIndex(nextIdx);
     trackXY(nextIdx);
 
     if (idx !== nextIdx) {
@@ -135,13 +128,15 @@ export default function AppFunctional(props) {
   return (
     <div id="wrapper" className={props.className}>
       <div className="info">
-        <h3 id="coordinates">Coordinates {getXY(getIndex(grid))}</h3>
-        <h3 id="steps">You moved {steps} times</h3>
+        <h3 id="coordinates">Coordinates {getXY(activeIndex)}</h3>
+        <h3 id="steps">
+          You moved {steps} {steps === 1 ? "time" : "times"}
+        </h3>
       </div>
       <div id="grid">
-        {grid.map((idx) => (
-          <div key={idx} className={`square${idx === 4 ? " active" : ""}`}>
-            {idx === 4 ? "B" : null}
+        {grid.map((item) => (
+          <div key={item} className={`square${item === 4 ? " active" : ""}`}>
+            {item === 4 ? "B" : null}
           </div>
         ))}
       </div>
