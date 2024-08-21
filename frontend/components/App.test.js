@@ -1,7 +1,8 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import AppFunctional from "./AppFunctional";
 import userEvent from "@testing-library/user-event";
+import "@testing-library/jest-dom/extend-expect";
 
 test("renders headings correctly", () => {
   render(<AppFunctional />);
@@ -20,13 +21,15 @@ test("renders directional buttons", () => {
   expect(screen.getByText(/DOWN/i)).toBeInTheDocument();
 });
 
-test("input value updates on typing", () => {
+test("input value updates on typing", async () => {
   render(<AppFunctional />);
 
-  const input = screen.getByPlaceholderText(/type email/i);
-  userEvent.type(input, "test@example.com");
+  const input = await screen.findByPlaceholderText(/type email/i);
+  await userEvent.type(input, "test@example.com");
 
-  expect(input.value).toBe("test@example.com");
+  await waitFor(() => {
+    expect(input.value).toBe("test@example.com");
+  });
 });
 test("reset button works correctly", () => {
   render(<AppFunctional />);
@@ -44,7 +47,7 @@ test("shows error message for invalid email", async () => {
   render(<AppFunctional />);
 
   const input = screen.getByPlaceholderText(/type email/i);
-  const submitButton = screen.findByText(/submit/i);
+  const submitButton = screen.getByTestId("submit");
 
   userEvent.type(input, "invalid-email");
   userEvent.click(submitButton);

@@ -97,13 +97,6 @@ export default function AppFunctional(props) {
 
   const onSubmit = async (evt) => {
     evt.preventDefault();
-    // if (!formData) {
-    //   setMessage("Ouch: email is required");
-    //   return;
-    // } else if (!formData.includes(".com" && ".baz")) {
-    //   setMessage("Ouch: email must be a valid email");
-    //   return;
-    // }
     setFormData(initialEmail);
     try {
       const { data } = await axios.post("http://localhost:9000/api/result", {
@@ -171,7 +164,7 @@ export default function AppFunctional(props) {
           type="email"
           placeholder="type email"
         ></input>
-        <input id="submit" type="submit"></input>
+        <input data-testid="submit" id="submit" type="submit"></input>
       </form>
     </div>
   );
