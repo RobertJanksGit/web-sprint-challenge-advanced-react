@@ -73,7 +73,6 @@ export default function AppFunctional(props) {
 
   function move(evt) {
     evt.preventDefault();
-
     const direction = evt.target.id;
     const idx = activeIndex;
     const nextIdx = getNextIndex(direction, idx);
@@ -82,7 +81,6 @@ export default function AppFunctional(props) {
 
     if (idx !== nextIdx) {
       const newGrid = [...grid];
-
       newGrid.splice(idx, 1);
       newGrid.splice(nextIdx, 0, 4);
       setGrid(newGrid);
@@ -127,12 +125,14 @@ export default function AppFunctional(props) {
         </h3>
       </div>
       <div id="grid">
+        {console.log(grid)}
         {grid.map((item) => (
           <div
             key={item}
-            className={`square${item === activeIndex ? " active" : ""}`}
+            id={item}
+            className={`square${item === 4 ? " active" : ""}`}
           >
-            {item === activeIndex ? "B" : null}
+            {item === 4 ? "B" : null}
           </div>
         ))}
       </div>
